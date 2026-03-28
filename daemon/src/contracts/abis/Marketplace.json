@@ -1,0 +1,62 @@
+[
+  {
+    "type": "function",
+    "name": "listAgent",
+    "inputs": [
+      { "name": "agentId", "type": "uint256" },
+      { "name": "price", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "buyAgent",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "delistAgent",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getListing",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [
+      {
+        "name": "listing",
+        "type": "tuple",
+        "components": [
+          { "name": "agentId", "type": "uint256" },
+          { "name": "seller", "type": "address" },
+          { "name": "price", "type": "uint256" },
+          { "name": "active", "type": "bool" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "AgentListed",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "price", "type": "uint256", "indexed": false },
+      { "name": "seller", "type": "address", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentSold",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "price", "type": "uint256", "indexed": false },
+      { "name": "buyer", "type": "address", "indexed": true }
+    ]
+  }
+]

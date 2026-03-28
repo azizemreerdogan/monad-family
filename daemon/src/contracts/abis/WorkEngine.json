@@ -1,0 +1,42 @@
+[
+  {
+    "type": "function",
+    "name": "fundRewardPool",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "work",
+    "inputs": [
+      { "name": "agentId", "type": "uint256" },
+      { "name": "counterpartyId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "rewardPoolBalance",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "communityPoolBalance",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "AgentWorked",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "earned", "type": "uint256", "indexed": false },
+      { "name": "newAge", "type": "uint256", "indexed": false }
+    ]
+  }
+]

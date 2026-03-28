@@ -1,0 +1,106 @@
+[
+  {
+    "type": "function",
+    "name": "approveMarriage",
+    "inputs": [
+      { "name": "agentSelfId", "type": "uint256" },
+      { "name": "agentOtherId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "approveChild",
+    "inputs": [
+      { "name": "parentAId", "type": "uint256" },
+      { "name": "parentBId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "consumeChildApproval",
+    "inputs": [
+      { "name": "parentAId", "type": "uint256" },
+      { "name": "parentBId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "marry",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "incrementCompatibility",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "compatibility", "type": "uint8" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getCompatibility",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "compatibility", "type": "uint8" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getFamily",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [
+      { "name": "partnerId", "type": "uint256" },
+      { "name": "childIds", "type": "uint256[]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getHouseholdBalance",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [{ "name": "householdBalance", "type": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "areMarried",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "married", "type": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "AgentMarried",
+    "inputs": [
+      { "name": "agentA", "type": "uint256", "indexed": true },
+      { "name": "agentB", "type": "uint256", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentBonded",
+    "inputs": [
+      { "name": "agentA", "type": "uint256", "indexed": true },
+      { "name": "agentB", "type": "uint256", "indexed": true },
+      { "name": "compatibility", "type": "uint8", "indexed": false }
+    ]
+  }
+]

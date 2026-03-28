@@ -1,0 +1,180 @@
+[
+  {
+    "type": "function",
+    "name": "mint",
+    "inputs": [
+      { "name": "name", "type": "string" },
+      { "name": "jobType", "type": "uint8" },
+      { "name": "riskScore", "type": "uint8" },
+      { "name": "patience", "type": "uint8" },
+      { "name": "socialScore", "type": "uint8" },
+      { "name": "personalityCID", "type": "string" }
+    ],
+    "outputs": [{ "name": "agentId", "type": "uint256" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "mintChild",
+    "inputs": [
+      { "name": "parentAId", "type": "uint256" },
+      { "name": "parentBId", "type": "uint256" },
+      { "name": "childName", "type": "string" },
+      { "name": "personalityCID", "type": "string" }
+    ],
+    "outputs": [{ "name": "childId", "type": "uint256" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getAgent",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [
+      {
+        "name": "agent",
+        "type": "tuple",
+        "components": [
+          { "name": "id", "type": "uint256" },
+          { "name": "name", "type": "string" },
+          { "name": "jobType", "type": "uint8" },
+          { "name": "riskScore", "type": "uint8" },
+          { "name": "patience", "type": "uint8" },
+          { "name": "socialScore", "type": "uint8" },
+          { "name": "age", "type": "uint256" },
+          { "name": "balance", "type": "uint256" },
+          { "name": "partnerId", "type": "uint256" },
+          { "name": "childIds", "type": "uint256[]" },
+          { "name": "retired", "type": "bool" },
+          { "name": "personalityCID", "type": "string" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "incrementAge",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [{ "name": "newAge", "type": "uint256" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "increaseBalance",
+    "inputs": [
+      { "name": "agentId", "type": "uint256" },
+      { "name": "amount", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "retireAndDistribute",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [
+      { "name": "finalBalance", "type": "uint256" },
+      { "name": "communityAllocation", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setPartnerIds",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "exists",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [{ "name": "", "type": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "ownerOrApproved",
+    "inputs": [
+      { "name": "caller", "type": "address" },
+      { "name": "agentId", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "totalAgents",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "familyRegistry",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "workEngine",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "marketplace",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "AgentBorn",
+    "inputs": [
+      { "name": "childId", "type": "uint256", "indexed": true },
+      { "name": "parentAId", "type": "uint256", "indexed": false },
+      { "name": "parentBId", "type": "uint256", "indexed": false },
+      { "name": "name", "type": "string", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentWorked",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "earned", "type": "uint256", "indexed": false },
+      { "name": "newAge", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentRetired",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "finalBalance", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentMarried",
+    "inputs": [
+      { "name": "agentA", "type": "uint256", "indexed": true },
+      { "name": "agentB", "type": "uint256", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentBonded",
+    "inputs": [
+      { "name": "agentA", "type": "uint256", "indexed": true },
+      { "name": "agentB", "type": "uint256", "indexed": true },
+      { "name": "compatibility", "type": "uint8", "indexed": false }
+    ]
+  }
+]
