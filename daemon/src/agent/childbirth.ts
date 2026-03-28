@@ -76,9 +76,9 @@ export async function checkAndExecuteChildBirths(agentIds: number[]): Promise<vo
       const parentAPersonality = await fetchPersonality(parentA.personalityCID);
       const parentBPersonality = await fetchPersonality(parentB.personalityCID);
 
-      const avgRisk = Math.round((parentA.riskScore + parentB.riskScore) / 2);
-      const avgPatience = Math.round((parentA.patience + parentB.patience) / 2);
-      const avgSocial = Math.round((parentA.socialScore + parentB.socialScore) / 2);
+      const avgRisk = Math.round((Number(parentA.riskScore) + Number(parentB.riskScore)) / 2);
+      const avgPatience = Math.round((Number(parentA.patience) + Number(parentB.patience)) / 2);
+      const avgSocial = Math.round((Number(parentA.socialScore) + Number(parentB.socialScore)) / 2);
       const childJobType = parentA.balance >= parentB.balance ? parentA.jobType : parentB.jobType;
 
       const { cid } = await generatePersonality(parentAPersonality, parentBPersonality, {

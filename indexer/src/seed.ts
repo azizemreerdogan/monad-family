@@ -35,6 +35,8 @@ function randomPos(idx: number): { posX: number; posY: number } {
   }
 }
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 async function seed() {
   console.log('[seed] Connecting to RPC:', config.rpc.url)
   console.log('[seed] AgentNFT address:    ', config.contracts.agentNFT)
@@ -69,15 +71,18 @@ async function seed() {
   console.log(`[seed] Found ${total} agents on-chain`)
 
   const agents: Agent[] = []
+  const rawAgentData = new Map<string, ReturnType<typeof Object.assign>>()
 
   for (let i = 1; i <= total; i++) {
     try {
+      await sleep(200)
       const exists = await agentNFT.exists(BigInt(i))
       if (!exists) {
         console.log(`[seed]   Agent ${i}: does not exist, skipping`)
         continue
       }
 
+      await sleep(200)
       const d = await agentNFT.getAgent(BigInt(i))
       const pos = randomPos(i - 1)
 
@@ -99,6 +104,7 @@ async function seed() {
 
       await upsertAgent(agent)
       agents.push(agent)
+      rawAgentData.set(agent.id, d)
       console.log(`[seed]   ✓ ${agent.name} (id=${i}, job=${agent.jobType}, age=${agent.age}, balance=${ethers.formatEther(d.balance)} MON)`)
     } catch (err) {
       console.error(`[seed]   ✗ Agent ${i} failed:`, err)
@@ -111,7 +117,8 @@ async function seed() {
   const processedMarriages = new Set<string>()
 
   for (const agent of agents) {
-    const d = await agentNFT.getAgent(BigInt(agent.id))
+    const d = rawAgentData.get(agent.id)
+    if (!d) continue
 
     // Marriage
     const partnerId = Number(d.partnerId)
@@ -145,6 +152,7 @@ async function seed() {
   for (let i = 0; i < agents.length; i++) {
     for (let j = i + 1; j < agents.length; j++) {
       try {
+        await sleep(200)
         const compat = Number(
           await familyRegistry.getCompatibility(BigInt(agents[i].id), BigInt(agents[j].id))
         )
