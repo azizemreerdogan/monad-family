@@ -4,9 +4,12 @@ import { ipfsCache } from './cache';
 import { withRetry } from '../utils/retry';
 import { logger } from '../utils/logger';
 
-// Build a mock CID → text map from seed agents for offline dev
-const MOCK_PERSONALITIES = new Map<string, string>(
-  SEED_AGENTS.map((a) => [`mock-cid-${a.id}`, a.personalityText]),
+// Build a CID → text map from seed agents for placeholder/mock CIDs
+const SEED_PERSONALITIES = new Map<string, string>(
+  SEED_AGENTS.flatMap((a) => [
+    [`mock-cid-${a.id}`, a.personalityText],
+    [`placeholder-${a.id}`, a.personalityText],
+  ]),
 );
 
 export async function uploadPersonality(text: string): Promise<string> {
@@ -42,8 +45,15 @@ export async function fetchPersonality(cid: string): Promise<string> {
   const cached = ipfsCache.get(cid);
   if (cached) return cached;
 
+  // Serve seed/placeholder personalities without hitting IPFS
+  const seedText = SEED_PERSONALITIES.get(cid);
+  if (seedText) {
+    ipfsCache.set(cid, seedText);
+    return seedText;
+  }
+
   if (config.mockMode) {
-    const text = MOCK_PERSONALITIES.get(cid) ?? 'You are an AI agent on the Monad blockchain. Execute your strategy.';
+    const text = 'You are an AI agent on the Monad blockchain. Execute your strategy.';
     ipfsCache.set(cid, text);
     return text;
   }

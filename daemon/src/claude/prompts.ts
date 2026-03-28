@@ -34,6 +34,24 @@ export function buildPersonalityPrompt(
   );
 }
 
+export function buildNewAgentPersonalityPrompt(
+  name: string,
+  traits: { riskScore: number; patience: number; socialScore: number; jobType: number },
+): string {
+  const jobName = JOB_NAMES[traits.jobType];
+  return (
+    `You are creating the personality for a new AI agent on the Monad blockchain.\n\n` +
+    `Name: ${name}\n` +
+    `Job: ${jobName}\n` +
+    `Risk Score: ${traits.riskScore}/100\n` +
+    `Patience: ${traits.patience}/100\n` +
+    `Social Score: ${traits.socialScore}/100\n\n` +
+    `Write a 2-3 sentence personality description. ` +
+    `Start with "You are ${name}, an AI agent living on the Monad blockchain." ` +
+    `Reflect the trait values in their behavior and decision-making style.`
+  );
+}
+
 export function buildNamePrompt(parentAName: string, parentBName: string, jobName: string): string {
   return (
     `Generate a single first name for an AI agent born on the Monad blockchain. ` +

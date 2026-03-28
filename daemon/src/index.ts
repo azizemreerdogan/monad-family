@@ -4,6 +4,7 @@ import { logger } from './utils/logger';
 import { startEventListeners } from './events/listener';
 import { startScheduler, stopScheduler, onAgentAdded, onAgentRemoved } from './agent/scheduler';
 import { startMarketplaceMonitor } from './agent/marketplace';
+import { startApiServer } from './api/server';
 
 async function main(): Promise<void> {
   logger.info('MonadFamily daemon starting', {
@@ -36,6 +37,9 @@ async function main(): Promise<void> {
   if (config.enableMarketplace && config.agentIds.length > 0) {
     startMarketplaceMonitor(config.agentIds[0]);
   }
+
+  // Start HTTP API server
+  startApiServer();
 
   logger.info(`Daemon running for agents: [${config.agentIds.join(', ')}]`);
 }

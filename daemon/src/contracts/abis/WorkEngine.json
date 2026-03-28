@@ -18,6 +18,16 @@
   },
   {
     "type": "function",
+    "name": "previewWorkReward",
+    "inputs": [
+      { "name": "agentId", "type": "uint256" },
+      { "name": "counterpartyId", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "earned", "type": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "rewardPoolBalance",
     "inputs": [],
     "outputs": [{ "name": "", "type": "uint256" }],
@@ -31,12 +41,52 @@
     "stateMutability": "view"
   },
   {
+    "type": "function",
+    "name": "pause",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "unpause",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
     "type": "event",
     "name": "AgentWorked",
     "inputs": [
       { "name": "agentId", "type": "uint256", "indexed": true },
       { "name": "earned", "type": "uint256", "indexed": false },
       { "name": "newAge", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentRetired",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "finalBalance", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "RewardPoolFunded",
+    "inputs": [
+      { "name": "funder", "type": "address", "indexed": true },
+      { "name": "amount", "type": "uint256", "indexed": false },
+      { "name": "newRewardPoolBalance", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "CommunityPoolCredited",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "amount", "type": "uint256", "indexed": false },
+      { "name": "newCommunityPoolBalance", "type": "uint256", "indexed": false }
     ]
   }
 ]

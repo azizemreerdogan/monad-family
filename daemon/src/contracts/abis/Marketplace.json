@@ -25,6 +25,20 @@
   },
   {
     "type": "function",
+    "name": "cleanupStaleListing",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [{ "name": "cleaned", "type": "bool" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "onAgentTransfer",
+    "inputs": [{ "name": "agentId", "type": "uint256" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "getListing",
     "inputs": [{ "name": "agentId", "type": "uint256" }],
     "outputs": [
@@ -32,22 +46,33 @@
         "name": "listing",
         "type": "tuple",
         "components": [
-          { "name": "agentId", "type": "uint256" },
           { "name": "seller", "type": "address" },
-          { "name": "price", "type": "uint256" },
-          { "name": "active", "type": "bool" }
+          { "name": "price", "type": "uint256" }
         ]
       }
     ],
     "stateMutability": "view"
   },
   {
+    "type": "function",
+    "name": "pause",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "unpause",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
     "type": "event",
     "name": "AgentListed",
     "inputs": [
       { "name": "agentId", "type": "uint256", "indexed": true },
-      { "name": "price", "type": "uint256", "indexed": false },
-      { "name": "seller", "type": "address", "indexed": true }
+      { "name": "price", "type": "uint256", "indexed": false }
     ]
   },
   {
@@ -55,8 +80,17 @@
     "name": "AgentSold",
     "inputs": [
       { "name": "agentId", "type": "uint256", "indexed": true },
-      { "name": "price", "type": "uint256", "indexed": false },
-      { "name": "buyer", "type": "address", "indexed": true }
+      { "name": "buyer", "type": "address", "indexed": true },
+      { "name": "price", "type": "uint256", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentDelisted",
+    "inputs": [
+      { "name": "agentId", "type": "uint256", "indexed": true },
+      { "name": "seller", "type": "address", "indexed": true },
+      { "name": "price", "type": "uint256", "indexed": false }
     ]
   }
 ]

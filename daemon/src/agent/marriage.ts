@@ -34,21 +34,17 @@ export async function checkAndExecuteMarriages(agentIds: number[]): Promise<void
 
         logger.info(`Marriage: agents ${agentIds[i]} & ${agentIds[j]} eligible (compatibility=${compat})`);
 
-        // Two-phase approval: each agent approves for themselves
-        const walletA = getWallet(agentIds[i]);
-        const registryA = getFamilyRegistry(walletA) as unknown as typeof familyRegistry;
-        const txApproveA = await withRetry(() => registryA.approveMarriage(aId, bId));
+        // Two-phase approval: admin wallet approves on behalf of each agent
+        const txApproveA = await withRetry(() => familyRegistry.approveMarriage(aId, bId));
         await txApproveA.wait();
         logger.debug(`Marriage: agent ${agentIds[i]} approved`);
 
-        const walletB = getWallet(agentIds[j]);
-        const registryB = getFamilyRegistry(walletB) as unknown as typeof familyRegistry;
-        const txApproveB = await withRetry(() => registryB.approveMarriage(bId, aId));
+        const txApproveB = await withRetry(() => familyRegistry.approveMarriage(bId, aId));
         await txApproveB.wait();
         logger.debug(`Marriage: agent ${agentIds[j]} approved`);
 
         // Execute marriage
-        const txMarry = await withRetry(() => registryA.marry(aId, bId));
+        const txMarry = await withRetry(() => familyRegistry.marry(aId, bId));
         await txMarry.wait();
 
         logger.info(`Marriage: agents ${agentIds[i]} & ${agentIds[j]} are now married!`);

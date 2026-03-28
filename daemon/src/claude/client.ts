@@ -1,15 +1,15 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import config from '../config';
 import { withRetry } from '../utils/retry';
 import { logger } from '../utils/logger';
 
-const MODEL = 'claude-sonnet-4-20250514';
+const MODEL = 'gemini-2.0-flash';
 
-let _client: Anthropic | null = null;
+let _client: GoogleGenerativeAI | null = null;
 
-function getClient(): Anthropic {
+function getClient(): GoogleGenerativeAI {
   if (!_client) {
-    _client = new Anthropic({ apiKey: config.anthropicApiKey });
+    _client = new GoogleGenerativeAI(config.geminiApiKey);
   }
   return _client;
 }
@@ -35,22 +35,23 @@ export async function callClaude(params: {
   if (config.mockMode) {
     const response = MOCK_WORK_RESPONSES[mockResponseIndex % MOCK_WORK_RESPONSES.length];
     mockResponseIndex++;
-    logger.debug('Claude call skipped (mock mode)', { response });
+    logger.debug('Gemini call skipped (mock mode)', { response });
     return response;
   }
 
   return withRetry(async () => {
-    const msg = await getClient().messages.create({
+    const model = getClient().getGenerativeModel({
       model: MODEL,
-      max_tokens: maxTokens,
-      system,
-      messages: [{ role: 'user', content: userMessage }],
+      systemInstruction: system,
+      generationConfig: { maxOutputTokens: maxTokens },
     });
 
-    const text = msg.content[0];
-    if (text.type !== 'text') throw new Error('Unexpected response type from Claude');
+    const result = await model.generateContent(userMessage);
+    const text = result.response.text();
 
-    logger.debug('Claude response received', { preview: text.text.slice(0, 80) });
-    return text.text;
+    if (!text) throw new Error('Unexpected empty response from Gemini');
+
+    logger.debug('Gemini response received', { preview: text.slice(0, 80) });
+    return text;
   });
 }

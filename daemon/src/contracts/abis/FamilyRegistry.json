@@ -11,7 +11,27 @@
   },
   {
     "type": "function",
+    "name": "revokeMarriageApproval",
+    "inputs": [
+      { "name": "agentSelfId", "type": "uint256" },
+      { "name": "agentOtherId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "approveChild",
+    "inputs": [
+      { "name": "parentAId", "type": "uint256" },
+      { "name": "parentBId", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "revokeChildApproval",
     "inputs": [
       { "name": "parentAId", "type": "uint256" },
       { "name": "parentBId", "type": "uint256" }
@@ -61,6 +81,39 @@
   },
   {
     "type": "function",
+    "name": "canMarry",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "ready", "type": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getMissingMarriageApprovals",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [
+      { "name": "agentAMissing", "type": "bool" },
+      { "name": "agentBMissing", "type": "bool" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getCompatibilityRemainingForMarriage",
+    "inputs": [
+      { "name": "agentAId", "type": "uint256" },
+      { "name": "agentBId", "type": "uint256" }
+    ],
+    "outputs": [{ "name": "remaining", "type": "uint8" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getFamily",
     "inputs": [{ "name": "agentId", "type": "uint256" }],
     "outputs": [
@@ -88,6 +141,15 @@
   },
   {
     "type": "event",
+    "name": "AgentBonded",
+    "inputs": [
+      { "name": "agentA", "type": "uint256", "indexed": true },
+      { "name": "agentB", "type": "uint256", "indexed": true },
+      { "name": "compatibility", "type": "uint8", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
     "name": "AgentMarried",
     "inputs": [
       { "name": "agentA", "type": "uint256", "indexed": true },
@@ -96,11 +158,20 @@
   },
   {
     "type": "event",
-    "name": "AgentBonded",
+    "name": "MarriageApprovalGranted",
     "inputs": [
-      { "name": "agentA", "type": "uint256", "indexed": true },
-      { "name": "agentB", "type": "uint256", "indexed": true },
-      { "name": "compatibility", "type": "uint8", "indexed": false }
+      { "name": "agentSelfId", "type": "uint256", "indexed": true },
+      { "name": "agentOtherId", "type": "uint256", "indexed": true },
+      { "name": "approver", "type": "address", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "ChildApprovalGranted",
+    "inputs": [
+      { "name": "parentAId", "type": "uint256", "indexed": true },
+      { "name": "parentBId", "type": "uint256", "indexed": true },
+      { "name": "approver", "type": "address", "indexed": true }
     ]
   }
 ]

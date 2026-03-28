@@ -14,11 +14,6 @@ function parseAgentIds(): number[] {
   return raw.split(',').map((s) => parseInt(s.trim(), 10)).filter((n) => !isNaN(n));
 }
 
-function parsePrivateKeys(): string[] {
-  const raw = process.env.AGENT_PRIVATE_KEYS;
-  if (!raw) return [];
-  return raw.split(',').map((s) => s.trim()).filter(Boolean);
-}
 
 function parseLogLevel(raw: string | undefined): Config['logLevel'] {
   if (raw === 'debug' || raw === 'info' || raw === 'warn' || raw === 'error') return raw;
@@ -28,14 +23,13 @@ function parseLogLevel(raw: string | undefined): Config['logLevel'] {
 const config: Config = {
   monadRpcUrl: process.env.MONAD_RPC_URL ?? 'https://testnet-rpc.monad.xyz',
   agentPrivateKey: process.env.AGENT_PRIVATE_KEY ?? '',
-  agentPrivateKeys: parsePrivateKeys(),
   contractAddresses: {
     agentNFT: process.env.CONTRACT_AGENT_NFT ?? '',
     familyRegistry: process.env.CONTRACT_FAMILY_REGISTRY ?? '',
     workEngine: process.env.CONTRACT_WORK_ENGINE ?? '',
     marketplace: process.env.CONTRACT_MARKETPLACE ?? '',
   },
-  anthropicApiKey: process.env.ANTHROPIC_API_KEY ?? '',
+  geminiApiKey: process.env.GEMINI_API_KEY ?? '',
   pinataJwt: process.env.PINATA_JWT ?? '',
   agentIds: parseAgentIds(),
   workIntervalMs: parseInt(process.env.WORK_INTERVAL_MS ?? '120000', 10),
@@ -58,7 +52,7 @@ export function validate(): void {
     ['CONTRACT_AGENT_NFT', config.contractAddresses.agentNFT],
     ['CONTRACT_WORK_ENGINE', config.contractAddresses.workEngine],
     ['CONTRACT_FAMILY_REGISTRY', config.contractAddresses.familyRegistry],
-    ['ANTHROPIC_API_KEY', config.anthropicApiKey],
+    ['GEMINI_API_KEY', config.geminiApiKey],
   ];
 
   const missing = required.filter(([, v]) => !v).map(([k]) => k);

@@ -24,8 +24,7 @@ export function getWalletForAgent(agentId: number): ethers.Wallet {
     );
   }
 
-  const keys = config.agentPrivateKeys;
-  const key = keys.length > 0 ? (keys[agentId - 1] ?? config.agentPrivateKey) : config.agentPrivateKey;
+  const key = config.agentPrivateKey;
 
   if (!key) throw new Error(`No private key configured for agent ${agentId}`);
 

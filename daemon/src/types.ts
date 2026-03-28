@@ -10,9 +10,14 @@ export interface Agent {
   socialScore: number;
   age: bigint;
   balance: bigint;
+  lockedBalance: bigint;
   partnerId: bigint;
+  maxAge: bigint;
   childIds: bigint[];
   retired: boolean;
+  independent: boolean;
+  sicknessEvaluated: boolean;
+  sicknessLevel: number;
   personalityCID: string;
 }
 
@@ -39,10 +44,8 @@ export interface WorkResult {
 }
 
 export interface Listing {
-  agentId: bigint;
   seller: string;
   price: bigint;
-  active: boolean;
 }
 
 export interface PersonalityResult {
@@ -77,14 +80,13 @@ export interface EventCallbacks {
 export interface Config {
   monadRpcUrl: string;
   agentPrivateKey: string;
-  agentPrivateKeys: string[];
   contractAddresses: {
     agentNFT: string;
     familyRegistry: string;
     workEngine: string;
     marketplace: string;
   };
-  anthropicApiKey: string;
+  geminiApiKey: string;
   pinataJwt: string;
   agentIds: number[];
   workIntervalMs: number;

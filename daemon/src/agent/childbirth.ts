@@ -16,6 +16,7 @@ export async function checkAndExecuteChildBirths(agentIds: number[]): Promise<vo
     mintChild: (
       parentAId: bigint,
       parentBId: bigint,
+      childOwner: string,
       name: string,
       personalityCID: string,
     ) => Promise<{ hash: string; wait: () => Promise<unknown> }>;
@@ -55,16 +56,12 @@ export async function checkAndExecuteChildBirths(agentIds: number[]): Promise<vo
 
       logger.info(`ChildBirth: couple ${parentAId} & ${parentBId} eligible for child`);
 
-      // Two-phase approval
-      const walletA = getWallet(Number(parentAId));
-      const registryA = getFamilyRegistry(walletA) as unknown as typeof familyRegistry;
-      const txApproveA = await withRetry(() => registryA.approveChild(parentAId, parentBId));
+      // Two-phase approval: admin wallet approves on behalf of each parent
+      const txApproveA = await withRetry(() => familyRegistry.approveChild(parentAId, parentBId));
       await txApproveA.wait();
       logger.debug(`ChildBirth: parent ${parentAId} approved`);
 
-      const walletB = getWallet(Number(parentBId));
-      const registryB = getFamilyRegistry(walletB) as unknown as typeof familyRegistry;
-      const txApproveB = await withRetry(() => registryB.approveChild(parentBId, parentAId));
+      const txApproveB = await withRetry(() => familyRegistry.approveChild(parentBId, parentAId));
       await txApproveB.wait();
       logger.debug(`ChildBirth: parent ${parentBId} approved`);
 
@@ -92,8 +89,7 @@ export async function checkAndExecuteChildBirths(agentIds: number[]): Promise<vo
       });
 
       // Mint child on-chain (contract handles trait blending with on-chain randomness)
-      const nftA = getAgentNFT(walletA) as unknown as typeof agentNFT;
-      const txMint = await withRetry(() => nftA.mintChild(parentAId, parentBId, childName, cid));
+      const txMint = await withRetry(() => agentNFT.mintChild(parentAId, parentBId, wallet.address, childName, cid));
       await txMint.wait();
 
       logger.info(`ChildBirth: ${childName} born to parents ${parentAId} & ${parentBId}`, { cid });

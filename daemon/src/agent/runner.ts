@@ -9,6 +9,7 @@ import { withRetry } from '../utils/retry';
 import { logger } from '../utils/logger';
 import { ethers } from 'ethers';
 import { Agent } from '../types';
+import { maybeFireRandomEvent } from './randomEvents';
 
 export async function runAgent(agentId: number, allAgentIds: number[]): Promise<void> {
   logger.debug(`Agent ${agentId}: work cycle starting`);
@@ -28,8 +29,8 @@ export async function runAgent(agentId: number, allAgentIds: number[]): Promise<
       return;
     }
 
-    if (agent.age >= 100n) {
-      logger.info(`Agent ${agentId} (${agent.name}): age ${agent.age}/100, retiring next cycle`);
+    if (agent.age >= agent.maxAge) {
+      logger.info(`Agent ${agentId} (${agent.name}): age ${agent.age}/${agent.maxAge}, retiring next cycle`);
       return;
     }
 
@@ -57,6 +58,9 @@ export async function runAgent(agentId: number, allAgentIds: number[]): Promise<
     await tx.wait();
 
     logger.info(`Agent ${agentId} (${agent.name}): work tx confirmed`, { hash: tx.hash });
+
+    // 7. Maybe fire a random event after work
+    await maybeFireRandomEvent(agentId, allAgentIds);
   } catch (err) {
     logger.error(`Agent ${agentId}: work cycle failed`, err);
     // Do NOT rethrow — a single agent failure must not crash the daemon

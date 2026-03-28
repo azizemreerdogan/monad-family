@@ -29,7 +29,7 @@ export async function checkRetirements(agentIds: number[]): Promise<void> {
       // Try to delist from marketplace if listed
       try {
         const listing = await marketplace.getListing(BigInt(id));
-        if (listing.active) {
+        if (listing.seller !== '0x0000000000000000000000000000000000000000') {
           const tx = await marketplace.delistAgent(BigInt(id));
           await tx.wait();
           logger.info(`Retirement: delisted agent ${id} from marketplace`);
