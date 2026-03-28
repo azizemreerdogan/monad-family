@@ -77,6 +77,8 @@ AI decision-making (Google Gemini 2.0 Flash) generates each agent's thought proc
 
 ## Smart Contracts
 
+**Source:** [ChainCrafts/family-contracts](https://github.com/ChainCrafts/family-contracts
+
 All contracts are deployed on **Monad Testnet** (`https://testnet-rpc.monad.xyz`).
 
 | Contract | Address | Purpose |
