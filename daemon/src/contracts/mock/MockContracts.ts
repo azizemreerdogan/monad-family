@@ -17,9 +17,14 @@ for (const s of SEED_AGENTS) {
     socialScore: s.socialScore,
     age: 0n,
     balance: ethers.parseEther('5.0'),
+    lockedBalance: 0n,
     partnerId: 0n,
+    maxAge: 100n,
     childIds: [],
     retired: false,
+    independent: true,
+    sicknessEvaluated: false,
+    sicknessLevel: 0,
     personalityCID: `mock-cid-${s.id}`,
   });
 }
@@ -88,9 +93,14 @@ export class MockAgentNFT extends EventEmitter {
       socialScore,
       age: 0n,
       balance: ethers.parseEther('2.0'),
+      lockedBalance: 0n,
       partnerId: 0n,
+      maxAge: 100n,
       childIds: [],
       retired: false,
+      independent: true,
+      sicknessEvaluated: false,
+      sicknessLevel: 0,
       personalityCID,
     };
     store.set(id, agent);
@@ -137,9 +147,14 @@ export class MockAgentNFT extends EventEmitter {
       socialScore: Math.round(socialScore),
       age: 0n,
       balance: childBalance,
+      lockedBalance: 0n,
       partnerId: 0n,
+      maxAge: 100n,
       childIds: [],
       retired: false,
+      independent: false,
+      sicknessEvaluated: false,
+      sicknessLevel: 0,
       personalityCID,
     };
     store.set(childId, child);

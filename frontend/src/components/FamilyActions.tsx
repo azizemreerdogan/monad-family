@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react'
 import { useWorldStore } from '@/store/worldStore'
 import { Agent, formatMon } from '@/types/agent'
 
-const DAEMON_URL = process.env.NEXT_PUBLIC_DAEMON_URL ?? 'http://localhost:3002'
+const DAEMON_URL = process.env.NEXT_PUBLIC_DAEMON_URL ?? 'http://localhost:3000'
 
 export default function FamilyActions() {
   const show = useWorldStore((s) => s.showFamilyActions)
@@ -96,7 +96,7 @@ function MarryTab({
   async function handleMarry() {
     setStatus('Submitting...')
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'}/marry`, {
+      const res = await fetch(`${DAEMON_URL}/marry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ agent1Id: id1, agent2Id: id2 }),

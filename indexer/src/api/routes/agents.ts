@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express'
-import { getAgentById, getAgentFamily, getAgentHistory } from '../../neo4j'
+import { getAgentById, getAgentFamily, getAgentHistory, updateAgentPosition } from '../../neo4j'
 
 const router = Router()
 
@@ -35,6 +35,22 @@ router.get('/:id', async (req: Request, res: Response) => {
   } catch (err) {
     console.error(`[api/agents] GET /agents/${id} error:`, err)
     res.status(500).json({ error: 'Failed to fetch agent' })
+  }
+})
+
+router.put('/:id/position', async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { posX, posY } = req.body as { posX: number; posY: number }
+  if (typeof posX !== 'number' || typeof posY !== 'number') {
+    res.status(400).json({ error: 'posX and posY must be numbers' })
+    return
+  }
+  try {
+    await updateAgentPosition(id, posX, posY)
+    res.json({ ok: true })
+  } catch (err) {
+    console.error(`[api/agents] PUT /agents/${id}/position error:`, err)
+    res.status(500).json({ error: 'Failed to update position' })
   }
 })
 
